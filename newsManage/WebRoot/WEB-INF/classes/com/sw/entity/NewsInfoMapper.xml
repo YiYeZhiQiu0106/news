@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sw.dao.NewsInfoDaoI">
+	<!-- 配置resultMap -->
+	<resultMap type="NewsInfo" id="NewsInfoResultMap">
+		<id column="n_id" property="n_id"/>
+		<result column="n_title" property="n_title"/>
+		<result column="n_text" property="n_text"/>
+		<result column="n_author" property="n_author"/>
+		<result column="n_time" property="n_time"/>
+		<result column="n_img" property="n_img"/>
+		<result column="n_roundup" property="n_roundup"/>
+		<result column="type_id" property="type_id"/>
+		<result column="n_state" property="n_state"/>
+		<result column="type_name" property="type_name"/>
+	</resultMap>
+	
+	<!-- 查询所有新闻信息匹配状态  分页-->
+	<select id="findAllNewsInfo" resultMap="NewsInfoResultMap">
+		select * from(select rownum ro,s.* from
+		(select n.*,t.type_name from News n left
+		join NewsType t on n.Type_id = t.Type_id where n.n_state = #{0})s
+		)where ro &gt;=#{1} and ro &lt;=#{2}
+	</select>
+	
+	<!-- 查询所有新闻  分页-->
+	<select id="findAllNewsInfom" resultMap="NewsInfoResultMap">
+		select * from(select rownum ro,s.* from
+		(select n.*,t.type_name from News n left
+		join NewsType t on n.Type_id = t.Type_id)s
+		)where ro &gt;=#{0} and ro &lt;=#{1}
+	</select>
+	
+	<!-- 查询所有新闻匹配类型ID  分页-->
+	<select id="findAllNewsInfomByType" resultMap="NewsInfoResultMap">
+		select * from(select rownum ro,s.* from
+		(select n.*,t.type_name from News n left
+		join NewsType t on n.Type_id = t.Type_id where t.Type_id = #{0})s
+		)where ro &gt;=#{1} and ro &lt;=#{2}
+	</select>
+	
+	<select id="findOneNewsInfoByNID" resultMap="NewsInfoResultMap">
+		select n.*,t.type_name from News n left join NewsType t 
+		on n.Type_id = t.Type_id where n.n_id = #{n_id}
+	</select>
+	
+</mapper>

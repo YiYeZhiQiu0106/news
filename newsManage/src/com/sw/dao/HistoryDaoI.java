@@ -1,0 +1,53 @@
+package com.sw.dao;
+
+import java.util.List;
+
+import com.sw.entity.History;
+import com.sw.entity.PageBean;
+
+/**
+ * 收藏历史信息DAO接口
+ * @author 顿盛华
+ *
+ */
+public interface HistoryDaoI {
+	//新增收藏历史信息,修改/删除收藏历史
+	/**
+	 * 插入收藏历史记录
+	 * @param history
+	 * @return
+	 */
+	public int insertHistory(History history);
+	
+	/**
+	 * 修改收藏历史
+	 * @param history 历史记录实体
+	 * @return int
+	 */
+	public int updateHistory(History history);
+	
+	/**
+	 * 查询单个历史记录
+	 * @param history 收藏历史记录实体
+	 * @return History 收藏历史记录实体
+	 */
+	public History findOneHistory(History history);
+	
+	/**
+	 * 查询所有收藏历史记录,支持分页
+	 * @return List<History>
+	 */
+	public List<History> findAllHistory(int begin,int end);
+	
+	/**
+	 * 获取历史记录总数
+	 * @return int
+	 */
+	public int getCountHistorys();
+	
+	/**
+	 * 查询最大的收藏ID
+	 * @return int
+	 */
+	public int findMaxHistoryID();
+}

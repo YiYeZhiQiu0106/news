@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sw.dao.HistoryDaoI">
+	<!-- 配置HistoryResultMap -->
+	<resultMap type="History" id="HistoryResultMap">
+		<id column="h_id" property="h_id"/>
+		<result column="n_id" property="n_id"/>
+		<result column="h_degree" property="h_degree"/>
+	</resultMap>
+	
+	<!-- 插入收藏历史记录 -->
+	<insert id="insertHistory" parameterType="History">
+		insert into History values(#{h_id},#{n_id},#{h_degree})
+	</insert>
+	
+	<!-- 修改收藏历史 -->
+	<update id="updateHistory" parameterType="History">
+		update History
+		<set>
+		     h_degree = #{h_degree}
+		</set>
+		     where n_id = #{n_id}
+	</update>
+	
+	<!--查询单个历史记录 -->
+	<select id="findOneHistory"  parameterType="History" resultMap="HistoryResultMap">
+	     select * from History where n_id = #{n_id}
+	</select>
+	
+	<!--  查询所有收藏历史记录,支持分页 -->
+	<select id="findAllHistory" resultMap="HistoryResultMap">
+		select * from (
+				select n.*,rownum rr from
+						( select * from History) n
+				)where rr &gt;= #{0} and rr &lt;=#{1}
+	</select>
+	
+	<!--  查询所有收藏历史记录总数 -->
+	<select id="getCountHistorys" resultType="int">
+		select count(1) from History
+	</select>
+	
+	<!--  查询最大的收藏历史ID -->
+	<select id="findMaxHistoryID" resultType="int">
+		select max(h_id) from history
+	</select>
+</mapper>

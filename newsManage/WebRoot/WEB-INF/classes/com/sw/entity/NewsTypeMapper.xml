@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sw.dao.NewsTypeDaoI">
+	<!-- 配置resultMap -->
+	<resultMap type="NewsType" id="NewsTypeResultMap">
+		<id column="type_id" property="type_id"/>
+		<result column="type_name" property="type_name"/>
+		<result column="type_introduce" property="type_introduce"/>
+	</resultMap>
+	
+	<!-- 查询所有分类信息 -->
+	<select id="findAllNewsType" resultMap="NewsTypeResultMap">
+		select * from NewsType
+	</select>
+	
+	
+	<!-- 根据id查询精确新闻类型信息 -->
+	<select id="findOneNewsType" parameterType="NewsType" resultMap="NewsTypeResultMap">
+	   select * from NewsType where type_id = #{type_id}
+	</select>
+	
+	<!-- 根据类型id或name模糊查询新闻类型信息 -->
+	<select id="findVagueNewsType" parameterType="NewsType" resultMap="NewsTypeResultMap">
+	   select * from NewsType where 1=1
+	   <if test="type_id!=0">
+	         and type_id like #{type_id}
+	   </if>
+	   <if test="type_name!=null">
+             and type_name like #{type_name}	   
+	   </if>
+	</select>
+	
+	<!-- 添加一个新闻类型 -->
+	<insert id="insertNewsType" parameterType="NewsType">
+	    insert into NewsType values(#{type_id},#{type_name},#{type_name},#{type_introduce})
+	</insert>
+	
+	<!--修改一个新闻类型  -->
+	<update id="updateNewsType" parameterType="NewsType">
+	    update NewsType
+	    <set>
+	     <if test="type_name!=null">
+	        type_name = #{type_name},
+	     </if>
+	      <if test="type_introduce!=null">
+	      	type_introduce = #{type_introduce},
+	      </if>
+	    </set>
+	    where type_id = #{type_id}
+	</update>
+	
+	<!-- 删除一个新闻类型 -->
+	<delete id="deleteNewsType" parameterType="NewsType">
+	   delete from NewsType where type_id = #{type_id}
+	</delete>
+	
+	<!-- 新增**************************************************************新增 -->
+	
+	<!--根据类型id查找新闻类型名称  -->
+	<select id="findTypnamebyTypeid" resultMap="NewsTypeResultMap">
+		select * from NewsType where type_id = #{type_id}
+	</select>
+	
+	<!-- 分页 -->
+	<select id="pageNewsType" resultMap="NewsTypeResultMap">
+	   select * from(
+				select n.*,rownum rr from
+     				 (select * from NewsType 
+     				)n
+				)where  rr &gt;= #{0} and rr &lt;= #{1}
+	</select>
+</mapper>

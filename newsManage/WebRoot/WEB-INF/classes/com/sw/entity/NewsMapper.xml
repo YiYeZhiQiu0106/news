@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sw.dao.NewsDaoI">
+	<!-- 配置resultMap -->
+	<resultMap type="News" id="newsResultMap">
+		<id column="n_id" property="n_id"/>
+		<result column="n_title" property="n_title"/>
+		<result column="n_text" property="n_text"/>
+		<result column="n_author" property="n_author"/>
+		<result column="n_time" property="n_time"/>
+		<result column="n_img" property="n_img"/>
+		<result column="n_roundup" property="n_roundup"/>
+		<result column="type_id" property="type_id"/>
+		<result column="n_state" property="n_state"/>
+		
+	</resultMap>
+	
+	<!-- 插入新闻信息 -->
+	<insert id="insertNews" parameterType="News">
+		insert into News values (#{n_id},#{n_title},#{n_text},#{n_author},#{n_time},#{n_img},#{n_roundup},#{type_id},#{n_state})
+	</insert>
+	
+	<!-- 修改新闻信息 -->
+	<update id="updateNews" parameterType="News">
+		update News set n_title = #{n_title},n_text = #{n_text},n_author = #{n_author},
+		n_time = #{n_time},n_img = #{n_img},n_roundup = #{n_roundup},
+		type_id = #{type_id},n_state = #{n_state} where n_id = #{n_id}
+	</update>
+	
+	<!-- 修改新闻信息,支持缺省 -->
+	<update id="updateNews2" parameterType="News">
+		update News
+		<set>
+			<if test="n_title != null">n_title = #{n_title},</if>
+			<if test="n_text != null">n_text = #{n_text},</if>
+			<if test="n_author != null">n_author = #{n_author},</if>
+			<if test="n_img != null">n_img = #{n_img},</if>
+			<if test="n_roundup != null">n_roundup = #{n_roundup},</if>
+			<if test="type_id != 0">type_id = #{type_id},</if>
+			<if test="n_state != 0">n_state = #{n_state},</if>
+		</set>
+			where n_id = #{n_id}
+	</update>
+	
+	<!-- 根据类型ID查询新闻信息，支持分页 -->
+	<select id="findNewsByType"  resultMap="newsResultMap">
+		select * from(
+				select n.*,rownum rr from
+     				 (select * from News where type_id = #{0}
+     				 and n_state &lt; 5
+     				)n
+				)where  rr &gt;= #{1} and rr &lt;= #{2}
+	</select>
+	
+	<!-- 根据新闻标题模糊查询新闻信息,支持分页 -->
+	<select id="findNewsByTitle" resultMap="newsResultMap">
+		
+		select * from (
+				select n.*,rownum rr from
+						( select * from News where n_title like '%' || #{0} || '%'
+					) n
+				)where rr &gt;= #{1} and rr &lt;=#{2}
+	</select>
+	
+	<!-- 根据新闻ID精确查询单个新闻 -->
+	<select id="findOneNewsByID" parameterType="int" resultMap="newsResultMap">
+		select * from News where n_id = #{n_id}
+	</select>
+	
+	<!-- 查询总数 -->
+	<select id="findAllNews" resultMap="newsResultMap">
+		select * from News
+	</select>
+	
+	<!-- 按照状态查询新闻 -->
+	<select id="findNewsByState" parameterType="int" resultMap="newsResultMap">
+		select * from News where n_state = #{n_state}
+	</select>
+	
+	
+	<select id="findMaxNewsID" resultType="int">
+		select max(n_id) from news
+	</select>
+	
+	<!-- 新增**************************************************新增 -->
+	<!-- 按照状态和类型ID查询新闻 -->
+	<select id="findNewsByTypeIdAndState" resultMap="newsResultMap">
+		select * from News where type_id = #{0} and n_state = #{1}
+	</select>
+	
+	<!-- 按照新闻类型ID查找对应类型ID的所有新闻 -->
+	<select id="findbyTypeId" resultMap="newsResultMap">
+		select * from News where type_id=#{type_id}
+ 	</select>
+	
+	
+	<!-- 按照新闻的标题模糊查找所有符合条件的新闻 -->
+	<select id="findAllNewsByTitle" resultMap="newsResultMap">
+		select * from News where n_title like '%' || #{n_title} || '%'
+	</select>
+	
+	<!-- 按照作者/用户名查找所有的新闻 -->
+	<select id="findAllNewsByauthor" resultMap="newsResultMap">
+		select * from (
+				select n.*,rownum rr from
+						( select * from News where n_author = #{0}
+					) n
+				)where rr &gt;= #{1} and rr &lt;=#{2}
+	</select>
+	
+	<select id="findAllByauthor" resultMap="newsResultMap">
+		select * from News where  n_author = #{n_author}
+ 	</select>
+</mapper>

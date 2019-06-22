@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sw.dao.CollectionedDaoI">
+	<!-- 配置resultMap -->
+	<resultMap type="Collectioned" id="CollectionedResultMap">
+		<id column="c_id" property="c_id"/>
+		<result column="u_id" property="u_id"/>
+		<result column="n_id" property="n_id"/>
+		<result column="c_time" property="c_time"/>
+	</resultMap>
+	
+	<insert id="insertCollection" parameterType="Collectioned">
+		insert into Collection values(collected.nextval,#{u_id},#{n_id},#{c_time})
+	</insert>
+	
+	<delete id="deleteCollection" parameterType="Collectioned">
+		delete from Collection where c_id=#{c_id}
+	</delete>
+	
+	<select id="findCollectionByUid" resultMap="CollectionedResultMap">
+		select * from Collection where u_id = #{u_id}
+	</select>
+	
+	<select id="findCollectionByUidPage" resultMap="CollectionedResultMap">
+		select * from (
+				select n.*,rownum rr from
+						( select * from Collection where u_id = #{0}
+					) n
+				)where rr &gt;= #{1} and rr &lt;=#{2}
+	</select>
+	
+	<select id="findOneCollection" resultMap="CollectionedResultMap">
+		select * from Collection where u_id = #{0} and n_id = #{1}
+	</select>
+	
+</mapper>

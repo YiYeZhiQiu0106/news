@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sw.dao.FeedBackDaoI">
+	<!-- 配置resultMap -->
+	<resultMap type="FeedBack" id="FeedBackResultMap">
+		<id column="f_id" property="f_id"/>
+		<result column="f_text" property="f_text"/>
+		<result column="f_time" property="f_time"/>
+		<result column="u_id" property="u_id"/>
+	</resultMap>
+	
+	<!-- 插入 操作-->
+	<insert id="insertFeedBack" parameterType="FeedBack">
+		insert into Feedback values(feed_id.nextval,#{f_text},#{f_time},#{u_id})
+	</insert>
+	<!-- 删除 操作-->
+	<delete id="deleteFeedBack" parameterType="FeedBack">
+		delete from Feedback where f_id=#{f_id}
+	</delete>
+	<!-- 查询所有  操作-->
+	<select id="findAllFeedBack"  resultMap="FeedBackResultMap">
+		select * from Feedback
+	</select>
+	
+	<!-- 查询单个对象  操作-->
+	<select id="findOneFeedBack" parameterType="FeedBack" resultMap="FeedBackResultMap">
+		select * from Feedback where f_id = #{f_id}
+	</select>
+</mapper>

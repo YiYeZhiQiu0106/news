@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sw.dao.ManagesDaoI">
+	<!-- 配置resultMap -->
+	<resultMap type="Manages" id="ManagesResultMap">
+		<id column="m_id" property="m_id"/>
+		<result column="m_name" property="m_name"/>
+		<result column="m_idNumber" property="m_idNumber"/>
+		<result column="m_tel" property="m_tel"/>
+		<result column="m_pwd" property="m_pwd"/>
+	</resultMap>
+	
+	<!-- 插入 操作-->
+	<insert id="insertManages" parameterType="Manages">
+		
+		insert into Manages values(#{m_id},#{m_name},#{m_idNumber},#{m_tel},#{m_pwd})
+	</insert>
+	<!-- 修改 操作-->
+	<update id="updateManages" parameterType="Manages">
+		update Manages set m_name = #{m_name},m_idNumber = #{m_idNumber},m_tel = #{m_tel},m_pwd = #{m_pwd} where m_id=#{m_id}
+	</update>
+
+	<!-- 查询所有  操作-->
+	<select id="selectAllManages"  resultMap="ManagesResultMap">
+		select * from Manages
+	</select>
+	
+	<select id="findOneManages"  resultMap="ManagesResultMap">
+		select * from Manages where m_tel = #{m_tel}
+	</select>
+	
+</mapper>

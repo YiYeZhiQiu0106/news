@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd"> 
+<configuration>
+	<typeAliases>
+		<typeAlias type="com.sw.entity.Collectioned" alias="Collectioned"/>
+		<typeAlias type="com.sw.entity.News" alias="News"/>
+		<typeAlias type="com.sw.entity.NewsType" alias="NewsType"/>
+		<typeAlias type="com.sw.entity.Nuser" alias="Nuser"/>
+		<typeAlias type="com.sw.entity.Manages" alias="Manages"/>
+		<typeAlias type="com.sw.entity.History" alias="History"/>
+		<typeAlias type="com.sw.entity.FeedBack" alias="FeedBack"/>
+		<typeAlias type="com.sw.entity.NewsInfo" alias="NewsInfo"/>
+		<typeAlias type="com.sw.entity.HistoryInfo" alias="HistoryInfo"/>
+	</typeAliases>
+	
+	<mappers>
+		<mapper resource="com/sw/entity/CollectionedMapper.xml"/>
+		<mapper resource="com/sw/entity/NewsMapper.xml"/>
+		<mapper resource="com/sw/entity/NewsTypeMapper.xml"/>
+		<mapper resource="com/sw/entity/NuserMapper.xml"/>
+		<mapper resource="com/sw/entity/ManagesMapper.xml"/>
+		<mapper resource="com/sw/entity/HistoryMapper.xml"/>
+		<mapper resource="com/sw/entity/FeedBackMapper.xml"/>
+		<mapper resource="com/sw/entity/NewsInfoMapper.xml"/>
+		<mapper resource="com/sw/entity/HistoryInfoMapper.xml"/>
+	</mappers>
+	
+</configuration> 

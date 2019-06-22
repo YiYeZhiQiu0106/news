@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sw.dao.NuserDaoI">
+	<!-- 配置resultMap -->
+	<resultMap type="Nuser" id="nuserResultMap">
+		<id column="u_id" property="u_id"/>
+		<result column="u_name" property="u_name"/>
+		<result column="u_sex" property="u_sex"/>
+		<result column="u_age" property="u_age"/>
+		<result column="u_phone" property="u_phone"/>
+		<result column="u_pwd" property="u_pwd"/>
+		<result column="u_time" property="u_time"/>
+	</resultMap>
+	
+	<!-- 查询条数 -->
+	<select id="getCount" resultMap="nuserResultMap">
+	  select * from Nuser
+	</select>
+	
+	<!-- 查询所有用户，支持分页 -->
+	<select id="findAllUser" resultMap="nuserResultMap">
+		select * from(
+				select n.*,rownum rr from
+     				 (select * from Nuser
+     				)n
+				)where  rr &gt;= #{0} and rr &lt;= #{1} 	
+	</select>
+	
+	<!-- 根据姓名模糊查询所有用户,支持分页 -->
+	<select id="findAllUserByName"  resultMap="nuserResultMap">
+		select * from(
+				select n.*,rownum rr from
+     				 (select * from Nuser where u_name like '%' || #{0} || '%'
+     				)n
+				)where  rr &gt;= #{1} and rr &lt;= #{2} 
+	</select>
+	
+	<!-- 插入用户 -->
+	<insert id="insertUser" parameterType="Nuser">
+		insert into Nuser values(userid.nextval,#{u_name},#{u_sex},#{u_age},#{u_phone},#{u_pwd},#{u_time})
+	</insert>
+	
+	
+	<!-- 根据手机号码查询单个用户 -->
+	<select id="findOneUserByUid" parameterType="int" resultMap="nuserResultMap">
+		select * from Nuser where u_id = #{u_id}
+	</select>
+	
+	<!-- 修改用户信息 -->
+	<update id="updateUser" parameterType="Nuser">
+		update Nuser 
+		<set>
+		<if test="u_name!=null">u_name = #{u_name},</if>
+		<if test="u_age!=0">u_age = #{u_age},</if>
+		<if test="u_phone!=null">u_phone = #{u_phone},</if>
+		<if test="u_pwd!=null">u_pwd = #{u_pwd}</if>
+		</set>
+		 where u_id = #{u_id}
+	</update>
+	
+	<!-- 删除用户信息 -->
+	<delete id="deleteUser" parameterType="Nuser">
+		delete from Nuser where u_id = #{u_id}
+	</delete>
+	
+	<!--登录  -->
+	<select id="oNlogin" parameterType="string" resultMap="nuserResultMap">
+	   select * from Nuser where u_phone = #{u_phone} 
+	</select>
+	
+	<!--按照编号查询单个用户信息  -->
+	<select id="findOneUserByID" parameterType="int" resultMap="nuserResultMap">
+	   select * from Nuser where u_id = #{u_id}
+	</select>
+	
+	<!-- 根据姓名模糊查询所有用户 -->
+	 <select id="getCountUser"  resultMap="nuserResultMap">
+        select * from Nuser where u_name like '%' || #{0} || '%'
+	</select>
+</mapper>
